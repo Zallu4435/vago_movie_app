@@ -52,10 +52,10 @@ describe('ToggleFavoriteUseCase', () => {
       expect(mockFavoriteRepository.save).toHaveBeenCalledWith(
         expect.objectContaining({
           imdbID: mockToggleFavoriteDto.imdbID,
-          title: mockToggleFavoriteDto.title,
-          year: mockToggleFavoriteDto.year,
-          poster: mockToggleFavoriteDto.poster,
-          type: mockToggleFavoriteDto.type,
+          movieTitle: mockToggleFavoriteDto.title,
+          movieYear: mockToggleFavoriteDto.year,
+          moviePoster: mockToggleFavoriteDto.poster,
+          movieType: mockToggleFavoriteDto.type,
         })
       );
     });

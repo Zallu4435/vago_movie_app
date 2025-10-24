@@ -13,7 +13,7 @@
     "test:ci": "jest --ci --coverage --watchAll=false",
     "lint": "eslint . --ext .ts",
     "format": "prettier --write \"src/**/*.ts\"",
-    "type-check": "tsc --noEmit"
+    "type-check": "tsc --noEmit --project tsconfig.dev.json"
   },
   "keywords": [
     "express",
@@ -28,15 +28,15 @@
   "license": "MIT",
   "type": "commonjs",
   "dependencies": {
+    "@types/node": "^24.9.1",
     "axios": "^1.12.2",
     "cors": "^2.8.5",
     "dotenv": "^17.2.3",
     "express": "^5.1.0",
     "express-session": "^1.18.1",
     "helmet": "^8.1.0",
-    "uuid": "^13.0.0",
-    "zod": "^4.1.12",
-    "@types/node": "^24.9.1"
+    "uuid": "^9.0.1",
+    "zod": "^4.1.12"
   },
   "devDependencies": {
     "@types/cors": "^2.8.19",

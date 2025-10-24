@@ -5,7 +5,8 @@ module.exports = {
     testMatch: ['**/__tests__/**/*.ts', '**/?(*.)+(spec|test).ts'],
     transform: {
         '^.+\\.ts$': ['ts-jest', {
-            useESM: true,
+            useESM: false,
+            tsconfig: 'tsconfig.dev.json',
         }],
     },
     collectCoverageFrom: [
@@ -29,7 +30,6 @@ module.exports = {
         },
     },
     transformIgnorePatterns: [
-        'node_modules/(?!(uuid)/)',
+        'node_modules/(?!(uuid|uuidv4)/)',
     ],
-    extensionsToTreatAsEsm: ['.ts'],
 };
