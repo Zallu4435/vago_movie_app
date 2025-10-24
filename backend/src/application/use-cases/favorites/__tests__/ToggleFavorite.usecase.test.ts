@@ -1,3 +1,5 @@
+/// <reference types="jest" />
+
 import { ToggleFavoriteUseCase } from '../ToggleFavorite.usecase';
 import { IFavoriteRepository } from '../../../ports/repositories/IFavoriteRepository';
 import { ToggleFavoriteDto } from '../../../dto/favorites/ToggleFavoriteDto';

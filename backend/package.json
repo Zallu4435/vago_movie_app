@@ -5,7 +5,7 @@
   "main": "dist/main/server.js",
   "scripts": {
     "dev": "nodemon",
-    "build": "tsc --project tsconfig.prod.json",
+    "build": "tsc --project tsconfig.prod.json && tsc-alias -p tsconfig.prod.json",
     "start": "node dist/main/server.js",
     "test": "jest",
     "test:watch": "jest --watchAll",
@@ -28,16 +28,17 @@
   "license": "MIT",
   "type": "commonjs",
   "dependencies": {
-    "@types/node": "^24.9.1",
+    "@types/cors": "^2.8.19",
     "@types/express": "^5.0.3",
     "@types/express-session": "^1.18.2",
-    "@types/cors": "^2.8.19",
+    "@types/node": "^24.9.1",
     "axios": "^1.12.2",
     "cors": "^2.8.5",
     "dotenv": "^17.2.3",
     "express": "^5.1.0",
     "express-session": "^1.18.1",
     "helmet": "^8.1.0",
+    "tsc-alias": "^1.8.16",
     "uuid": "^9.0.1",
     "zod": "^4.1.12"
   },

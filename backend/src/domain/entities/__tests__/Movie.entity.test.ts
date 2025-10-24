@@ -1,3 +1,5 @@
+/// <reference types="jest" />
+
 import { Movie } from '../Movie.entity';
 
 describe('Movie Entity', () => {
