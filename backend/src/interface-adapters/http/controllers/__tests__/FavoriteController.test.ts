@@ -1,9 +1,9 @@
 import { Request, Response } from 'express';
 import { FavoriteController } from '../FavoriteController';
-import { IToggleFavoriteUseCase } from '../../../../../application/ports/use-cases/favorites/IToggleFavoriteUseCase';
-import { IGetUserFavoritesUseCase } from '../../../../../application/ports/use-cases/favorites/IGetUserFavoritesUseCase';
-import { ICheckIsFavoriteUseCase } from '../../../../../application/ports/use-cases/favorites/ICheckIsFavoriteUseCase';
-import { IRemoveAllFavoritesUseCase } from '../../../../../application/ports/use-cases/favorites/IRemoveAllFavoritesUseCase';
+import { IToggleFavoriteUseCase } from '@application/ports/use-cases/favorites/IToggleFavoriteUseCase';
+import { IGetUserFavoritesUseCase } from '@application/ports/use-cases/favorites/IGetUserFavoritesUseCase';
+import { ICheckIsFavoriteUseCase } from '@application/ports/use-cases/favorites/ICheckIsFavoriteUseCase';
+import { IRemoveAllFavoritesUseCase } from '@application/ports/use-cases/favorites/IRemoveAllFavoritesUseCase';
 
 describe('FavoriteController', () => {
   let favoriteController: FavoriteController;

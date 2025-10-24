@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { MovieController } from '../MovieController';
-import { ISearchMoviesUseCase } from '../../../../../application/ports/use-cases/movies/ISearchMoviesUseCase';
+import { ISearchMoviesUseCase } from '@application/ports/use-cases/movies/ISearchMoviesUseCase';
 
 describe('MovieController', () => {
   let movieController: MovieController;

@@ -16,8 +16,8 @@ import { ICheckIsFavoriteUseCase } from '../../application/ports/use-cases/favor
 import { RemoveAllFavoritesUseCase } from '../../application/use-cases/favorites/RemoveAllFavorites.usecase';
 import { IRemoveAllFavoritesUseCase } from '../../application/ports/use-cases/favorites/IRemoveAllFavoritesUseCase';
 
-import { MovieController } from '../adapters/http/controllers/MovieController';
-import { FavoriteController } from '../adapters/http/controllers/FavoriteController';
+import { MovieController } from '../../interface-adapters/http/controllers/MovieController';
+import { FavoriteController } from '../../interface-adapters/http/controllers/FavoriteController';
 
 import { omdbConfig } from '../config/omdb.config';
 

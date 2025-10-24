@@ -1,9 +1,9 @@
 import { Request, Response } from 'express';
-import { IToggleFavoriteUseCase } from '../../../../application/ports/use-cases/favorites/IToggleFavoriteUseCase';
-import { IGetUserFavoritesUseCase } from '../../../../application/ports/use-cases/favorites/IGetUserFavoritesUseCase';
-import { ICheckIsFavoriteUseCase } from '../../../../application/ports/use-cases/favorites/ICheckIsFavoriteUseCase';
-import { IRemoveAllFavoritesUseCase } from '../../../../application/ports/use-cases/favorites/IRemoveAllFavoritesUseCase';
-import { ToggleFavoriteDto } from '../../../../application/dto/favorites/ToggleFavoriteDto';
+import { IToggleFavoriteUseCase } from '@application/ports/use-cases/favorites/IToggleFavoriteUseCase';
+import { IGetUserFavoritesUseCase } from '@application/ports/use-cases/favorites/IGetUserFavoritesUseCase';
+import { ICheckIsFavoriteUseCase } from '@application/ports/use-cases/favorites/ICheckIsFavoriteUseCase';
+import { IRemoveAllFavoritesUseCase } from '@application/ports/use-cases/favorites/IRemoveAllFavoritesUseCase';
+import { ToggleFavoriteDto } from '@application/dto/favorites/ToggleFavoriteDto';
 import { asyncHandler } from '../middleware/asyncHandler';
 
 export class FavoriteController {

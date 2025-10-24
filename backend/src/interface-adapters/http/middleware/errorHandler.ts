@@ -1,8 +1,8 @@
 import { Request, Response, NextFunction } from 'express';
-import { AppError } from '../../../../shared/errors/AppError';
-import { DomainError } from '../../../../domain/errors/DomainError';
-import { ValidationError } from '../../../../shared/errors/ValidationError';
-import { DuplicateFavoriteError } from '../../../../domain/errors/DuplicateFavoriteError';
+import { AppError } from '@shared/errors/AppError';
+import { DomainError } from '@domain/errors/DomainError';
+import { ValidationError } from '@shared/errors/ValidationError';
+import { DuplicateFavoriteError } from '@domain/errors/DuplicateFavoriteError';
 
 export const errorHandler = (
   err: Error,

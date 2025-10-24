@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { ISearchMoviesUseCase } from '../../../../application/ports/use-cases/movies/ISearchMoviesUseCase';
+import { ISearchMoviesUseCase } from '@application/ports/use-cases/movies/ISearchMoviesUseCase';
 import { asyncHandler } from '../middleware/asyncHandler';
 
 export class MovieController {
