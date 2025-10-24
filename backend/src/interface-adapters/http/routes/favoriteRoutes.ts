@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { FavoriteController } from '../controllers/FavoriteController';
 import { validateBody, validateParams } from '../middleware/validationMiddleware';
-import { toggleFavoriteSchema, imdbIdParamSchema } from '../../../../application/validators/favorite.validators';
+import { toggleFavoriteSchema, imdbIdParamSchema } from '@application/validators/favorite.validators';
 
 export const createFavoriteRouter = (
   favoriteController: FavoriteController

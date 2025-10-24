@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { MovieController } from '../controllers/MovieController';
 import { validateQuery } from '../middleware/validationMiddleware';
-import { searchMoviesSchema } from '../../../../application/validators/movie.validators';
+import { searchMoviesSchema } from '@application/validators/movie.validators';
 
 export const createMovieRouter = (
   movieController: MovieController
