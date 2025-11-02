@@ -13,6 +13,9 @@ import { Logger } from '../shared/utils/logger';
 export const createApp = (): Express => {
   const app = express();
 
+  // Trust first proxy (required for Render and other hosting platforms)
+  app.set('trust proxy', 1);
+
   app.use(helmet());
   app.use(
     cors({
@@ -24,13 +27,17 @@ export const createApp = (): Express => {
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
 
+  const isProduction = appConfig.nodeEnv === 'production';
+
   app.use(session({
     secret: process.env.SESSION_SECRET || 'your-session-secret',
     resave: false,
     saveUninitialized: true,
     cookie: {
       maxAge: 7 * 24 * 60 * 60 * 1000, 
-      httpOnly: true
+      httpOnly: true,
+      secure: isProduction, // Use secure cookies in production (HTTPS)
+      sameSite: isProduction ? 'none' : 'lax', // Required for cross-origin in production
     },
   }));
 
