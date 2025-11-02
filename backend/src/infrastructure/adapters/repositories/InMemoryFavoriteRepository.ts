@@ -1,23 +1,33 @@
 import { Favorite } from '../../../domain/entities/Favorite.entity';
 import { IFavoriteRepository } from '../../../application/ports/repositories/IFavoriteRepository';
+import { SessionConfig } from '../../../shared/constants/sessionConfig';
+
+interface FavoriteEntry {
+  data: Favorite;
+  expiresAt: number;
+}
 
 export class InMemoryFavoriteRepository implements IFavoriteRepository {
-  private favorites: Map<string, Favorite> = new Map();
-  private sessionIndex: Map<string, Set<string>> = new Map(); // sessionId -> Set of favoriteIds
+  private favorites: Map<string, FavoriteEntry> = new Map();
+  private sessionIndex: Map<string, Set<string>> = new Map(); 
+  private readonly TTL = SessionConfig.TTL_MS; 
 
   async findBySessionId(sessionId: string): Promise<Favorite[]> {
+    await this.cleanupExpired(); 
+    
     const favoriteIds = this.sessionIndex.get(sessionId);
     if (!favoriteIds) return [];
 
     const favorites: Favorite[] = [];
+    const now = Date.now();
+    
     for (const id of favoriteIds) {
-      const favorite = this.favorites.get(id);
-      if (favorite) {
-        favorites.push(favorite);
+      const entry = this.favorites.get(id);
+      if (entry && entry.expiresAt > now) {
+        favorites.push(entry.data);
       }
     }
 
-    // Sort by addedAt descending (most recent first)
     return favorites.sort((a, b) => b.addedAt.getTime() - a.addedAt.getTime());
   }
 
@@ -25,10 +35,12 @@ export class InMemoryFavoriteRepository implements IFavoriteRepository {
     const favoriteIds = this.sessionIndex.get(sessionId);
     if (!favoriteIds) return null;
 
+    const now = Date.now();
+    
     for (const id of favoriteIds) {
-      const favorite = this.favorites.get(id);
-      if (favorite && favorite.imdbID === imdbID) {
-        return favorite;
+      const entry = this.favorites.get(id);
+      if (entry && entry.data.imdbID === imdbID && entry.expiresAt > now) {
+        return entry.data;
       }
     }
 
@@ -36,9 +48,14 @@ export class InMemoryFavoriteRepository implements IFavoriteRepository {
   }
 
   async save(favorite: Favorite): Promise<void> {
-    this.favorites.set(favorite.id, favorite);
+    const expiresAt = Date.now() + this.TTL;
+    const entry: FavoriteEntry = {
+      data: favorite,
+      expiresAt,
+    };
+    
+    this.favorites.set(favorite.id, entry);
 
-    // Update session index
     if (!this.sessionIndex.has(favorite.userId)) {
       this.sessionIndex.set(favorite.userId, new Set());
     }
@@ -51,7 +68,6 @@ export class InMemoryFavoriteRepository implements IFavoriteRepository {
 
     this.favorites.delete(favorite.id);
 
-    // Update session index
     const sessionFavorites = this.sessionIndex.get(sessionId);
     if (sessionFavorites) {
       sessionFavorites.delete(favorite.id);
@@ -77,5 +93,38 @@ export class InMemoryFavoriteRepository implements IFavoriteRepository {
     }
 
     this.sessionIndex.delete(sessionId);
+  }
+
+  async cleanupExpired(): Promise<void> {
+    const now = Date.now();
+    const expiredIds: string[] = [];
+    const expiredSessions = new Set<string>();
+
+    for (const [id, entry] of this.favorites.entries()) {
+      if (entry.expiresAt <= now) {
+        expiredIds.push(id);
+        expiredSessions.add(entry.data.userId);
+      }
+    }
+
+    for (const id of expiredIds) {
+      this.favorites.delete(id);
+    }
+
+    for (const sessionId of expiredSessions) {
+      const sessionFavorites = this.sessionIndex.get(sessionId);
+      if (sessionFavorites) {
+        for (const id of expiredIds) {
+          sessionFavorites.delete(id);
+        }
+        if (sessionFavorites.size === 0) {
+          this.sessionIndex.delete(sessionId);
+        }
+      }
+    }
+  }
+
+  getAllSessionIds(): string[] {
+    return Array.from(this.sessionIndex.keys());
   }
 }

@@ -7,4 +7,6 @@ export interface IFavoriteRepository {
   delete(sessionId: string, imdbID: string): Promise<boolean>;
   exists(sessionId: string, imdbID: string): Promise<boolean>;
   deleteAllBySessionId(sessionId: string): Promise<void>;
+  cleanupExpired(): Promise<void>;
+  getAllSessionIds(): string[];
 }

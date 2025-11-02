@@ -1,10 +1,6 @@
-import { ReactNode } from 'react';
 import { Header } from '../Header/Header';
 import { Footer } from '../Footer/Footer';
-
-interface LayoutProps {
-  children: ReactNode;
-}
+import { LayoutProps } from '@/types/component.types';
 
 export const Layout = ({ children }: LayoutProps) => {
   return (
@@ -12,7 +8,7 @@ export const Layout = ({ children }: LayoutProps) => {
       <Header />
       
       <main className="flex-1">
-        <div className="container-custom py-8">
+        <div className="container-custom py-4 sm:py-6 md:py-8">
           {children}
         </div>
       </main>

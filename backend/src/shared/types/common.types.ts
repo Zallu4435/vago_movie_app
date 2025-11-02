@@ -1,3 +1,5 @@
+import { ResponseStatus } from '../constants/responseStatus';
+
 export type Nullable<T> = T | null;
 
 export type Optional<T> = T | undefined;
@@ -18,14 +20,14 @@ export interface PaginatedResponse<T> {
 }
 
 export interface ApiResponse<T = any> {
-  status: 'success' | 'error';
+  status: typeof ResponseStatus.SUCCESS | typeof ResponseStatus.ERROR;
   message?: string;
   data?: T;
   errors?: any[];
 }
 
 export interface ErrorResponse {
-  status: 'error';
+  status: typeof ResponseStatus.ERROR;
   message: string;
   code: string;
   errors?: Array<{

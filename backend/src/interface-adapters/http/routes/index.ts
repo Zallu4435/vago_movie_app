@@ -3,6 +3,9 @@ import { MovieController } from '../controllers/MovieController';
 import { FavoriteController } from '../controllers/FavoriteController';
 import { createMovieRouter } from './movieRoutes';
 import { createFavoriteRouter } from './favoriteRoutes';
+import { HttpStatus } from '../../../shared/constants/httpStatus';
+import { ResponseStatus } from '../../../shared/constants/responseStatus';
+import { ApiRoutes } from '../../../shared/constants/routes';
 
 export const createRoutes = (
   movieController: MovieController,
@@ -10,12 +13,12 @@ export const createRoutes = (
 ): Router => {
   const router = Router();
 
-  router.use('/movies', createMovieRouter(movieController));
-  router.use('/favorites', createFavoriteRouter(favoriteController));
+  router.use(ApiRoutes.MOVIES, createMovieRouter(movieController));
+  router.use(ApiRoutes.FAVORITES, createFavoriteRouter(favoriteController));
 
-  router.get('/health', (req, res) => {
-    res.status(200).json({
-      status: 'success',
+  router.get(ApiRoutes.HEALTH, (req, res) => {
+    res.status(HttpStatus.OK).json({
+      status: ResponseStatus.SUCCESS,
       message: 'Server is healthy',
       timestamp: new Date().toISOString(),
     });

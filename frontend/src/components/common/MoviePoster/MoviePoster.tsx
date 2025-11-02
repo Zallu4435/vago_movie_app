@@ -1,12 +1,7 @@
 import { useState } from 'react';
 import { getPosterUrl } from '@utils/helpers';
 import { Film } from 'lucide-react';
-
-interface MoviePosterProps {
-  poster: string;
-  title: string;
-  className?: string;
-}
+import { MoviePosterProps } from '@/types/component.types';
 
 export const MoviePoster = ({ poster, title, className = '' }: MoviePosterProps) => {
   const [hasError, setHasError] = useState(false);
@@ -25,25 +20,25 @@ export const MoviePoster = ({ poster, title, className = '' }: MoviePosterProps)
   const shouldShowPlaceholder = hasError || posterUrl === '/placeholder-movie.png';
 
   return (
-    <div className={`relative ${className}`}>
+    <div className={`relative overflow-hidden ${className}`}>
       {isLoading && (
         <div className="absolute inset-0 bg-gray-200 animate-pulse flex items-center justify-center">
-          <div className="w-8 h-8 border-2 border-gray-300 border-t-gray-900 rounded-full animate-spin"></div>
+          <div className="w-6 h-6 sm:w-8 sm:h-8 border-2 border-gray-300 border-t-gray-900 rounded-full animate-spin"></div>
         </div>
       )}
       
       {shouldShowPlaceholder ? (
         <div className="w-full h-full bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center">
           <div className="text-center text-gray-400">
-            <Film className="w-12 h-12 mx-auto mb-2" />
-            <p className="text-xs font-medium">No Image</p>
+            <Film className="w-10 h-10 sm:w-12 sm:h-12 mx-auto mb-1 sm:mb-2" />
+            <p className="text-xs sm:text-sm font-medium px-2">No Image</p>
           </div>
         </div>
       ) : (
         <img
           src={posterUrl}
           alt={title}
-          className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+          className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105 sm:group-hover:scale-110"
           loading="lazy"
           onError={handleError}
           onLoad={handleLoad}

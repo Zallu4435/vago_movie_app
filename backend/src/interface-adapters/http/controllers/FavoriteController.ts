@@ -5,6 +5,8 @@ import { ICheckIsFavoriteUseCase } from '@application/ports/use-cases/favorites/
 import { IRemoveAllFavoritesUseCase } from '@application/ports/use-cases/favorites/IRemoveAllFavoritesUseCase';
 import { ToggleFavoriteDto } from '@application/dto/favorites/ToggleFavoriteDto';
 import { asyncHandler } from '../middleware/asyncHandler';
+import { HttpStatus } from '../../../shared/constants/httpStatus';
+import { ResponseStatus } from '../../../shared/constants/responseStatus';
 
 export class FavoriteController {
   constructor(
@@ -19,8 +21,8 @@ export class FavoriteController {
 
     const favorites = await this.getUserFavoritesUseCase.execute(sessionId);
 
-    res.status(200).json({
-      status: 'success',
+    res.status(HttpStatus.OK).json({
+      status: ResponseStatus.SUCCESS,
       data: {
         favorites,
         count: favorites.length,
@@ -42,8 +44,8 @@ export class FavoriteController {
 
     const result = await this.toggleFavoriteUseCase.execute(dto);
 
-    res.status(200).json({
-      status: 'success',
+    res.status(HttpStatus.OK).json({
+      status: ResponseStatus.SUCCESS,
       message: result.message,
       data: {
         isFavorited: result.isFavorited,
@@ -57,8 +59,8 @@ export class FavoriteController {
 
     const isFavorited = await this.checkIsFavoriteUseCase.execute(sessionId, imdbID);
 
-    res.status(200).json({
-      status: 'success',
+    res.status(HttpStatus.OK).json({
+      status: ResponseStatus.SUCCESS,
       data: {
         isFavorited,
       },
@@ -70,8 +72,8 @@ export class FavoriteController {
 
     await this.removeAllFavoritesUseCase.execute(sessionId);
 
-    res.status(200).json({
-      status: 'success',
+    res.status(HttpStatus.OK).json({
+      status: ResponseStatus.SUCCESS,
       message: 'All favorites removed successfully',
     });
   });

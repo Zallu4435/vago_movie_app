@@ -1,6 +1,8 @@
 import { Request, Response } from 'express';
 import { ISearchMoviesUseCase } from '@application/ports/use-cases/movies/ISearchMoviesUseCase';
 import { asyncHandler } from '../middleware/asyncHandler';
+import { HttpStatus } from '../../../shared/constants/httpStatus';
+import { ResponseStatus } from '../../../shared/constants/responseStatus';
 
 export class MovieController {
   constructor(private readonly searchMoviesUseCase: ISearchMoviesUseCase) {}
@@ -13,8 +15,8 @@ export class MovieController {
 
     const result = await this.searchMoviesUseCase.execute(query, pageNumber);
 
-    res.status(200).json({
-      status: 'success',
+    res.status(HttpStatus.OK).json({
+      status: ResponseStatus.SUCCESS,
       data: result,
     });
   });

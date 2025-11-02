@@ -4,6 +4,10 @@ import { IFavoriteRepository } from '../../application/ports/repositories/IFavor
 import { OMDBMovieAPI } from '../adapters/external-apis/OMDBMovieAPI';
 import { IExternalMovieAPI } from '../../application/ports/services/IExternalMovieAPI';
 
+import { SessionCleanupService } from '../adapters/services/SessionCleanupService';
+import { ISessionCleanupService } from '../../application/ports/services/ISessionCleanupService';
+import { SessionConfig } from '../../shared/constants/sessionConfig';
+
 import { SearchMoviesUseCase } from '../../application/use-cases/movies/SearchMovies.usecase';
 import { ISearchMoviesUseCase } from '../../application/ports/use-cases/movies/ISearchMoviesUseCase';
 
@@ -22,13 +26,15 @@ import { FavoriteController } from '../../interface-adapters/http/controllers/Fa
 import { omdbConfig } from '../config/omdb.config';
 
 export class Container {
-  // Repository instances
   private static favoriteRepository: IFavoriteRepository = new InMemoryFavoriteRepository();
 
-  // External API instances
   private static movieAPI: IExternalMovieAPI = new OMDBMovieAPI(omdbConfig.apiKey, omdbConfig.baseURL);
 
-  // Use case instances
+  public static sessionCleanupService: ISessionCleanupService = new SessionCleanupService(
+    Container.favoriteRepository,
+    SessionConfig.CLEANUP_INTERVAL_MINUTES
+  );
+
   private static searchMoviesUseCase: ISearchMoviesUseCase = new SearchMoviesUseCase(
     Container.movieAPI
   );
@@ -49,7 +55,6 @@ export class Container {
     Container.favoriteRepository
   );
 
-  // Controller instances
   public static movieController = new MovieController(
     Container.searchMoviesUseCase
   );

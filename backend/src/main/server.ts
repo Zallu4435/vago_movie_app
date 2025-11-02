@@ -1,6 +1,7 @@
 import { createApp } from './app';
 import { appConfig } from '../infrastructure/config/app.config';
 import { Logger } from '../shared/utils/logger';
+import { Container } from '../infrastructure/di/container';
 
 const startServer = () => {
   try {
@@ -10,11 +11,17 @@ const startServer = () => {
       Logger.info(`🚀 Server running on port ${appConfig.port}`);
       Logger.info(`📝 Environment: ${appConfig.nodeEnv}`);
       Logger.info(`🌐 CORS origin: ${appConfig.corsOrigin}`);
+      
+      Container.sessionCleanupService.start();
+      
       Logger.info(`✅ Server is ready to accept requests`);
     });
 
     const gracefulShutdown = (signal: string) => {
       Logger.info(`${signal} signal received: closing HTTP server`);
+      
+      Container.sessionCleanupService.stop();
+      
       server.close(() => {
         Logger.info('HTTP server closed');
         process.exit(0);

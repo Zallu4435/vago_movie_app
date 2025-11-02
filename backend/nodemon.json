@@ -6,7 +6,7 @@
     "ignore": [
         "src/**/*.test.ts"
     ],
-    "exec": "ts-node src/main/server.ts",
+    "exec": "ts-node -r tsconfig-paths/register src/main/server.ts",
     "env": {
         "NODE_ENV": "development"
     }

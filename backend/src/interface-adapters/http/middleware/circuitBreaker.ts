@@ -1,4 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
+import { HttpStatus } from '@shared/constants/httpStatus';
+import { ResponseStatus } from '@shared/constants/responseStatus';
 
 interface CircuitBreakerState {
   failures: number;
@@ -85,8 +87,8 @@ class CircuitBreaker {
       const key = this.getKey(req);
       
       if (!this.shouldAllowRequest(key)) {
-        return res.status(503).json({
-          status: 'error',
+        return res.status(HttpStatus.SERVICE_UNAVAILABLE).json({
+          status: ResponseStatus.ERROR,
           message: 'Service temporarily unavailable. Please try again later.',
           code: 'CIRCUIT_BREAKER_OPEN',
           retryAfter: Math.ceil(this.retryTimeout / 1000)

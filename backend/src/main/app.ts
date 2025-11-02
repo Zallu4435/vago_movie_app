@@ -9,11 +9,13 @@ import { circuitBreaker } from '../interface-adapters/http/middleware/circuitBre
 import { Container } from '../infrastructure/di/container';
 import { appConfig } from '../infrastructure/config/app.config';
 import { Logger } from '../shared/utils/logger';
+import { SessionConfig } from '../shared/constants/sessionConfig';
+import { ResponseStatus } from '../shared/constants/responseStatus';
+import { ApiRoutes } from '../shared/constants/routes';
 
 export const createApp = (): Express => {
   const app = express();
 
-  // Trust first proxy (required for Render and other hosting platforms)
   app.set('trust proxy', 1);
 
   app.use(helmet());
@@ -34,14 +36,14 @@ export const createApp = (): Express => {
     resave: false,
     saveUninitialized: true,
     cookie: {
-      maxAge: 7 * 24 * 60 * 60 * 1000, 
+      maxAge: SessionConfig.TTL_MS, 
       httpOnly: true,
-      secure: isProduction, // Use secure cookies in production (HTTPS)
-      sameSite: isProduction ? 'none' : 'lax', // Required for cross-origin in production
+      secure: isProduction, 
+      sameSite: isProduction ? 'none' : 'lax', 
     },
   }));
 
-  app.use('/api', circuitBreaker.middleware());
+  app.use(ApiRoutes.BASE, circuitBreaker.middleware());
 
   if (appConfig.nodeEnv === 'development') {
     app.use((req, res, next) => {
@@ -55,17 +57,17 @@ export const createApp = (): Express => {
     Container.favoriteController
   );
 
-  app.use('/api', routes);
+  app.use(ApiRoutes.BASE, routes);
 
   app.get('/', (req, res) => {
     res.json({
-      status: 'success',
+      status: ResponseStatus.SUCCESS,
       message: 'Movie Search & Favorites API',
       version: '1.0.0',
       endpoints: {
-        health: '/api/health',
-        movies: '/api/movies',
-        favorites: '/api/favorites',
+        health: `${ApiRoutes.BASE}${ApiRoutes.HEALTH}`,
+        movies: `${ApiRoutes.BASE}${ApiRoutes.MOVIES}`,
+        favorites: `${ApiRoutes.BASE}${ApiRoutes.FAVORITES}`,
       },
     });
   });

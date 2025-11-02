@@ -1,9 +1,4 @@
-interface PaginationProps {
-  currentPage: number;
-  totalResults: number;
-  resultsPerPage?: number;
-  onPageChange: (page: number) => void;
-}
+import { PaginationProps } from '@/types/component.types';
 
 export const Pagination = ({
   currentPage,
@@ -45,22 +40,22 @@ export const Pagination = ({
   };
 
   return (
-    <div className="flex items-center justify-center gap-2 mt-8">
+    <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-2 mt-6 sm:mt-8 px-4">
       <button
         onClick={() => onPageChange(currentPage - 1)}
         disabled={currentPage === 1}
-        className="px-4 py-2 rounded-lg border border-gray-300 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium text-sm"
+        className="w-full sm:w-auto px-4 sm:px-5 py-2 sm:py-2.5 rounded-lg border border-gray-300 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium text-sm"
       >
         Previous
       </button>
 
-      <div className="flex gap-1">
+      <div className="flex gap-1 sm:gap-1.5 overflow-x-auto max-w-full py-2">
         {getPageNumbers().map((page, index) => (
           <button
             key={index}
             onClick={() => typeof page === 'number' && onPageChange(page)}
             disabled={page === '...'}
-            className={`min-w-[40px] px-3 py-2 rounded-lg border transition-colors font-medium text-sm ${
+            className={`min-w-[36px] sm:min-w-[40px] px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg border transition-colors font-medium text-xs sm:text-sm flex-shrink-0 ${
               page === currentPage
                 ? 'bg-gray-900 text-white border-gray-900'
                 : page === '...'
@@ -76,7 +71,7 @@ export const Pagination = ({
       <button
         onClick={() => onPageChange(currentPage + 1)}
         disabled={currentPage === totalPages}
-        className="px-4 py-2 rounded-lg border border-gray-300 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium text-sm"
+        className="w-full sm:w-auto px-4 sm:px-5 py-2 sm:py-2.5 rounded-lg border border-gray-300 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium text-sm"
       >
         Next
       </button>
